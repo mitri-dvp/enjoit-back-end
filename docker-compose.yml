@@ -1,0 +1,24 @@
+version: '3.8'
+name: platzi_store
+services:
+  postgres:
+    image: postgres:16.1
+    container_name: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - './docker_data/pg_data:/var/lib/postgresql/data'
+    env_file:
+      - .env
+
+  pgadmin:
+    image: dpage/pgadmin4:8.1
+    container_name: pgadmin
+    depends_on:
+      - postgres
+    ports:
+      - '8080:80'
+    volumes:
+      - './docker_data/pgadmin_data:/var/lib/pgadmin'
+    env_file:
+      - .env
