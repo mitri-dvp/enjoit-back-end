@@ -23,4 +23,8 @@ export class AppService {
     const res = await this.pg.query('SELECT * FROM tasks');
     return res.rows;
   }
+
+  async guardMe() {
+    return 'Access granted!';
+  }
 }
