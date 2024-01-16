@@ -27,4 +27,16 @@ export class AppService {
   async guardMe() {
     return 'Access granted!';
   }
+
+  async guardX() {
+    return 'Access granted x!';
+  }
+
+  async guardY() {
+    return 'Access granted y!';
+  }
+
+  async public() {
+    return 'Public access!';
+  }
 }
