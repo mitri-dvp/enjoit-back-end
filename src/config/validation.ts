@@ -3,6 +3,7 @@ import { z } from 'zod';
 const configSchema = z.object({
   // Server
   PORT: z.coerce.number().positive(),
+  API_KEY: z.string(),
   // PostgreSQL
   POSTGRES_USER: z.string(),
   POSTGRES_HOST: z.string(),
