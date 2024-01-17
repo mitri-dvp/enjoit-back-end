@@ -12,5 +12,6 @@ import { CustomersModule } from '../customers/customers.module';
   imports: [TypeOrmModule.forFeature([User]), ProductsModule, CustomersModule],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}
