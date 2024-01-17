@@ -18,11 +18,13 @@ import { OrdersModule } from './orders/orders.module';
 import { OrderItemsModule } from './order-items/order-items.module';
 
 import { lastValueFrom } from 'rxjs';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     HttpModule,
     DatabaseModule,
+    AuthModule,
     UsersModule,
     ProductsModule,
     CustomersModule,
