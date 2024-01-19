@@ -9,6 +9,7 @@ import {
   NotFoundException,
   ParseIntPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import {
@@ -17,8 +18,10 @@ import {
   UpdateProductDto,
 } from './dto/product.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('products')
+@UseGuards(AuthGuard('jwt'))
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
