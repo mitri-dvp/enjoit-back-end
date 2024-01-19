@@ -11,17 +11,20 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Public } from '../auth/decorators/public.decorator';
+
 import { ProductsService } from './products.service';
 import {
   CreateProductDto,
   FindProductDto,
   UpdateProductDto,
 } from './dto/product.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('products')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(JwtAuthGuard)
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -32,11 +35,13 @@ export class ProductsController {
   }
 
   @ApiOperation({ summary: 'Gets a list of products' })
+  @Public()
   @Get()
   async findAll(@Query() params: FindProductDto) {
     return await this.productsService.findAll(params);
   }
 
+  @Public()
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const product = await this.productsService.findOne(+id);
