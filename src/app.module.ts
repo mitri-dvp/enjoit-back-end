@@ -19,6 +19,7 @@ import { OrderItemsModule } from './order-items/order-items.module';
 
 import { lastValueFrom } from 'rxjs';
 import { AuthModule } from './auth/auth.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { AuthModule } from './auth/auth.module';
     BrandsModule,
     OrdersModule,
     OrderItemsModule,
+    ProfileModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: enviorments[process.env.NODE_ENV] || '.env',
