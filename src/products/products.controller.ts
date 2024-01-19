@@ -14,7 +14,11 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { Public } from '../auth/decorators/public.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
+
+import { Role } from 'src/auth/models/roles.model';
 
 import { ProductsService } from './products.service';
 import {
@@ -24,11 +28,12 @@ import {
 } from './dto/product.dto';
 
 @ApiTags('products')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @Roles(Role.ADMIN)
   @Post()
   async create(@Body() createProductDto: CreateProductDto) {
     return await this.productsService.create(createProductDto);
