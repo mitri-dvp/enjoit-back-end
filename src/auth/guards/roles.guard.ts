@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { Role } from '../models/roles.model';
-import { PayloadToken } from '../models/token.model';
+import { JwtPayload } from '../models/token.model';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -25,7 +25,7 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<Request>();
 
-    const user = request.user as PayloadToken;
+    const user = request.user as JwtPayload;
 
     const isAuth = roles.some((role) => role === user.role);
 

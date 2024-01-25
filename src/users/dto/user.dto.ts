@@ -1,30 +1,15 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsEmail,
-  Length,
-  IsPositive,
-  IsOptional,
-} from 'class-validator';
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'nestjs-zod/z';
 
-export class CreateUserDto {
-  @IsString()
-  @IsEmail()
-  readonly email: string;
+import { Role } from '../../auth/models/roles.model';
 
-  @IsString()
-  @IsNotEmpty()
-  @Length(6)
-  readonly password: string;
+const CreateUserSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+  role: z.nativeEnum(Role),
+  customerId: z.number().optional().describe('ID del Client'),
+});
 
-  @IsString()
-  @IsNotEmpty()
-  readonly role: string;
+export class CreateUserDto extends createZodDto(CreateUserSchema) {}
 
-  @IsPositive()
-  @IsOptional()
-  readonly customerId: number;
-}
-
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto extends createZodDto(CreateUserSchema.partial()) {}

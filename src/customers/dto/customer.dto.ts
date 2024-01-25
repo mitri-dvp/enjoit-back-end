@@ -1,18 +1,16 @@
-import { IsString, IsNotEmpty, IsEmail, Length } from 'class-validator';
-import { PartialType } from '@nestjs/swagger';
+import { z } from 'nestjs-zod/z';
+import { createZodDto } from 'nestjs-zod';
 
-export class CreateCustomerDto {
-  @IsString()
-  @IsNotEmpty()
-  firstName: string;
+const CreateCustomerSchema = z
+  .object({
+    firstName: z.string(),
+    lastName: z.string(),
+    phone: z.string(),
+  })
+  .strict();
 
-  @IsString()
-  @IsNotEmpty()
-  lastName: string;
+export class CreateCustomerDto extends createZodDto(CreateCustomerSchema) {}
 
-  @IsString()
-  @IsNotEmpty()
-  phone: string;
-}
-
-export class UpdateCustomerDto extends PartialType(CreateCustomerDto) {}
+export class UpdateCustomerDto extends createZodDto(
+  CreateCustomerSchema.partial(),
+) {}

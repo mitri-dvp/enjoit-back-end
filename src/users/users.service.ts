@@ -20,16 +20,14 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(createUserDto);
+  async create(dto: CreateUserDto): Promise<User> {
+    const newUser = this.userRepository.create(dto);
 
     const hashPassword = await bcrypt.hash(newUser.password, 10);
     newUser.password = hashPassword;
 
-    if (createUserDto.customerId) {
-      const customer = await this.customersService.findOne(
-        createUserDto.customerId,
-      );
+    if (dto.customerId) {
+      const customer = await this.customersService.findOne(dto.customerId);
       newUser.customer = customer;
     }
 

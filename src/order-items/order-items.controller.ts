@@ -15,8 +15,8 @@ export class OrderItemsController {
   constructor(private readonly orderItemsService: OrderItemsService) {}
 
   @Post()
-  create(@Body() createOrderItemDto: CreateOrderItemDto) {
-    return this.orderItemsService.create(createOrderItemDto);
+  create(@Body() dto: CreateOrderItemDto) {
+    return this.orderItemsService.create(dto);
   }
 
   @Get()
@@ -30,11 +30,8 @@ export class OrderItemsController {
   }
 
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateOrderItemDto: UpdateOrderItemDto,
-  ) {
-    return this.orderItemsService.update(+id, updateOrderItemDto);
+  update(@Param('id') id: string, @Body() dto: UpdateOrderItemDto) {
+    return this.orderItemsService.update(+id, dto);
   }
 
   @Delete(':id')

@@ -1,68 +1,32 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsEmail,
-  Length,
-  IsUrl,
-  IsNumber,
-  IsPositive,
-  IsArray,
-  IsOptional,
-  Min,
-  ValidateIf,
-} from 'class-validator';
-import { PartialType } from '@nestjs/swagger';
+import { z } from 'nestjs-zod/z';
+import { createZodDto } from 'nestjs-zod';
 
-export class CreateProductDto {
-  @IsString()
-  readonly name: string;
+const CreateProductSchema = z
+  .object({
+    name: z.string(),
+    description: z.string(),
+    price: z.number().positive().min(1).step(1),
+    stock: z.number().positive().min(1).step(1),
+    image: z.string().url(),
+    brandId: z.number().positive().min(1).step(1),
+    categoriesIds: z.array(z.number()),
+  })
+  .strict();
 
-  @IsString()
-  readonly description: string;
+export class CreateProductDto extends createZodDto(CreateProductSchema) {}
 
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @IsPositive()
-  readonly price: number;
+export class UpdateProductDto extends createZodDto(
+  CreateProductSchema.partial(),
+) {}
 
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @IsPositive()
-  readonly stock: number;
+const FindProductSchema = z
+  .object({
+    limit: z.number().positive().min(1).step(1),
+    offset: z.number().positive().min(0).step(1),
+    minPrice: z.number().positive().min(1).step(1),
+    maxPrice: z.number().positive().min(1).step(1),
+  })
+  .strict()
+  .optional();
 
-  @IsString()
-  @IsUrl()
-  readonly image: string;
-
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @IsPositive()
-  @IsNotEmpty()
-  readonly brandId: number;
-
-  @IsArray()
-  @IsNotEmpty()
-  readonly categoriesIds: number[];
-}
-
-export class UpdateProductDto extends PartialType(CreateProductDto) {}
-
-export class FindProductDto {
-  @IsOptional()
-  @IsPositive()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  limit: number;
-
-  @IsOptional()
-  @IsPositive()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  offset: number;
-
-  @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  minPrice: number;
-
-  @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  maxPrice: number;
-}
+export class FindProductDto extends createZodDto(FindProductSchema) {}

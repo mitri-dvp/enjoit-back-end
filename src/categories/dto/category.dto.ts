@@ -1,9 +1,14 @@
-import { IsString, IsNotEmpty, IsEmail, Length } from 'class-validator';
-import { PartialType } from '@nestjs/swagger';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'nestjs-zod/z';
 
-export class CreateCategoryDto {
-  @IsString()
-  name: string;
-}
+const CreateCategorySchema = z
+  .object({
+    name: z.string(),
+  })
+  .strict();
 
-export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {}
+export class CreateCategoryDto extends createZodDto(CreateCategorySchema) {}
+
+export class UpdateCategoryDto extends createZodDto(
+  CreateCategorySchema.partial(),
+) {}

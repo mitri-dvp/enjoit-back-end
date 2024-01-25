@@ -1,13 +1,13 @@
-import { IsString, IsNotEmpty, IsEmail, Length, IsUrl } from 'class-validator';
-import { PartialType } from '@nestjs/swagger';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'nestjs-zod/z';
 
-export class CreateBrandDto {
-  @IsString()
-  readonly name: string;
+const CreateBrandSchema = z
+  .object({
+    name: z.string(),
+    image: z.string().url(),
+  })
+  .strict();
 
-  @IsString()
-  @IsUrl()
-  readonly image: string;
-}
+export class CreateBrandDto extends createZodDto(CreateBrandSchema) {}
 
-export class UpdateBrandDto extends PartialType(CreateBrandDto) {}
+export class UpdateBrandDto extends createZodDto(CreateBrandSchema.partial()) {}

@@ -17,8 +17,8 @@ export class BrandsController {
   constructor(private readonly brandsService: BrandsService) {}
 
   @Post()
-  create(@Body() createBrandDto: CreateBrandDto) {
-    return this.brandsService.create(createBrandDto);
+  create(@Body() dto: CreateBrandDto) {
+    return this.brandsService.create(dto);
   }
 
   @Get()
@@ -32,8 +32,8 @@ export class BrandsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
-    return this.brandsService.update(+id, updateBrandDto);
+  update(@Param('id') id: string, @Body() dto: UpdateBrandDto) {
+    return this.brandsService.update(+id, dto);
   }
 
   @Delete(':id')

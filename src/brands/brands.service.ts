@@ -11,8 +11,8 @@ export class BrandsService {
     @InjectRepository(Brand) private brandRepository: Repository<Brand>,
   ) {}
 
-  async create(createBrandDto: CreateBrandDto): Promise<Brand> {
-    const newBrand = this.brandRepository.create(createBrandDto);
+  async create(dto: CreateBrandDto): Promise<Brand> {
+    const newBrand = this.brandRepository.create(dto);
     return await this.brandRepository.save(newBrand);
   }
 
@@ -33,10 +33,10 @@ export class BrandsService {
     return brand;
   }
 
-  async update(id: number, updateBrandDto: UpdateBrandDto): Promise<Brand> {
+  async update(id: number, dto: UpdateBrandDto): Promise<Brand> {
     const brand = await this.findOne(id);
 
-    this.brandRepository.merge(brand, updateBrandDto);
+    this.brandRepository.merge(brand, dto);
 
     return await this.brandRepository.save(brand);
   }

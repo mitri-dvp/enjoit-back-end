@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards, Req } from '@nestjs/common';
 import { Request } from 'express';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { PayloadToken } from '../auth/models/token.model';
+import { JwtPayload } from '../auth/models/token.model';
 
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -18,7 +18,7 @@ export class ProfileController {
   @Roles(Role.CUSTOMER)
   @Get('my-orders')
   findMyOrders(@Req() req: Request) {
-    const user = req.user as PayloadToken;
+    const user = req.user as JwtPayload;
     return this.profileService.findMyOrders(user.sub);
   }
 }

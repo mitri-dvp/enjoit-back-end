@@ -1,30 +1,16 @@
-import {
-  IsString,
-  IsNotEmpty,
-  IsEmail,
-  Length,
-  IsUrl,
-  IsNumber,
-  IsPositive,
-  IsArray,
-} from 'class-validator';
-import { PartialType } from '@nestjs/swagger';
+import { z } from 'nestjs-zod/z';
+import { createZodDto } from 'nestjs-zod';
 
-export class CreateOrderItemDto {
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @IsPositive()
-  @IsNotEmpty()
-  readonly quantity: number;
+const CreateOrderItemSchema = z
+  .object({
+    quantity: z.number().positive().step(1),
+    productId: z.number().positive().step(1),
+    orderId: z.number().positive().step(1),
+  })
+  .strict();
 
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @IsPositive()
-  @IsNotEmpty()
-  readonly productId: number;
+export class CreateOrderItemDto extends createZodDto(CreateOrderItemSchema) {}
 
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @IsPositive()
-  @IsNotEmpty()
-  readonly orderId: number;
-}
-
-export class UpdateOrderItemDto extends PartialType(CreateOrderItemDto) {}
+export class UpdateOrderItemDto extends createZodDto(
+  CreateOrderItemSchema.partial(),
+) {}

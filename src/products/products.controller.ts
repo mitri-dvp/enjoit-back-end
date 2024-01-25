@@ -35,8 +35,8 @@ export class ProductsController {
 
   @Roles(Role.ADMIN)
   @Post()
-  async create(@Body() createProductDto: CreateProductDto) {
-    return await this.productsService.create(createProductDto);
+  async create(@Body() dto: CreateProductDto) {
+    return await this.productsService.create(dto);
   }
 
   @ApiOperation({ summary: 'Gets a list of products' })
@@ -59,11 +59,8 @@ export class ProductsController {
   }
 
   @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateProductDto: UpdateProductDto,
-  ) {
-    return await this.productsService.update(+id, updateProductDto);
+  async update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+    return await this.productsService.update(+id, dto);
   }
 
   @Delete(':id')

@@ -1,4 +1,4 @@
-export interface PayloadToken {
+export interface JwtPayload {
   role: string;
   sub: number;
 }

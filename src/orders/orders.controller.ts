@@ -19,8 +19,8 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  async create(@Body() createOrderDto: CreateOrderDto) {
-    return await this.ordersService.create(createOrderDto);
+  async create(@Body() dto: CreateOrderDto) {
+    return await this.ordersService.create(dto);
   }
 
   @ApiOperation({ summary: 'Gets a list of orders' })
@@ -41,11 +41,8 @@ export class OrdersController {
   }
 
   @Put(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateOrderDto: UpdateOrderDto,
-  ) {
-    return await this.ordersService.update(+id, updateOrderDto);
+  async update(@Param('id') id: string, @Body() dto: UpdateOrderDto) {
+    return await this.ordersService.update(+id, dto);
   }
 
   @Delete(':id')
