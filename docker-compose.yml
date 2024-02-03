@@ -1,9 +1,9 @@
 version: '3.8'
-name: enjoit_back_end
+name: enjoit-back_end
 services:
   postgres:
     image: postgres:16.1
-    container_name: postgres
+    container_name: enjoit-postgres
     ports:
       - '5432:5432'
     volumes:
@@ -13,7 +13,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:8.2
-    container_name: pgadmin
+    container_name: enjoit-pgadmin
     depends_on:
       - postgres
     ports:
