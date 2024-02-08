@@ -6,7 +6,7 @@ import { UseZodGuard } from 'nestjs-zod';
 import { LoginDto, SignupDto } from '../dto/auth.dto';
 import { AuthService } from '../services/auth.service';
 
-import { User } from '../../users/entities/user.entity';
+import { User } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {

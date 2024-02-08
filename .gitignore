@@ -41,3 +41,8 @@ lerna-debug.log*
 
 # Docker
 docker_data/
+
+# Prisma
+prisma/client
+prisma/zod
+prisma/schema-*

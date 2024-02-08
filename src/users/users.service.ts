@@ -1,55 +1,57 @@
-import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
-
 import * as bcrypt from 'bcrypt';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
+import { PrismaService } from '../prisma/prisma.service';
 
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
-import { User } from './entities/user.entity';
-
-import { ProductsService } from '../products/products.service';
-import { CustomersService } from '../customers/customers.service';
-
-import { Order } from '../orders/entities/order.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private productsService: ProductsService,
-    private customersService: CustomersService,
-    @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(dto: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(dto);
+  async create(payload: CreateUserDto) {
+    const user = await this.prisma.user.findFirst({
+      where: { email: payload.email },
+    });
 
-    const hashPassword = await bcrypt.hash(newUser.password, 10);
-    newUser.password = hashPassword;
-
-    if (dto.customerId) {
-      const customer = await this.customersService.findOne(dto.customerId);
-      newUser.customer = customer;
+    if (user) {
+      throw new BadRequestException('User exists');
     }
 
-    return await this.userRepository.save(newUser);
+    const hashPassword = await bcrypt.hash(payload.password, 10);
+    payload.password = hashPassword;
+
+    return this.prisma.user.create({
+      data: {
+        documentId: 123,
+        documentType: 123,
+        firstName: 'firstName',
+        lastName: 'lastName',
+        gender: 'gender',
+        nickName: 'nickName',
+        state: 123,
+        email: payload.email,
+        password: hashPassword,
+      },
+    });
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find({ relations: { customer: true } });
+  findAll() {
+    return `This action returns all users`;
   }
 
-  async findOne(id: number): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id: id } });
-
-    if (!user) {
-      throw new NotFoundException(`User #${id} not found`);
-    }
-
-    return user;
+  findOne(id: number) {
+    return `This action returns a #${id} user`;
   }
 
-  async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { email: email } });
+  async findByEmail(email: string) {
+    const user = await this.prisma.user.findFirst({
+      where: { email: email },
+    });
 
     if (!user) {
       throw new NotFoundException(`User email ${email} not found`);
@@ -58,25 +60,11 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findOne(id);
-    if (updateUserDto.customerId) {
-      const customer = await this.customersService.findOne(
-        updateUserDto.customerId,
-      );
-      user.customer = customer;
-    }
-    this.userRepository.merge(user, updateUserDto);
-    return await this.userRepository.save(user);
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return `This action updates a #${id} user`;
   }
 
-  async remove(id: number) {
-    return await this.userRepository.delete(id);
-  }
-
-  async getOrders(id: number): Promise<User> {
-    const user = await this.findOne(id);
-
-    return user;
+  remove(id: number) {
+    return `This action removes a #${id} user`;
   }
 }

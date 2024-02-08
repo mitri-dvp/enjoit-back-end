@@ -6,9 +6,10 @@ import { JwtPayload } from '../models/token.model';
 
 import { SignupDto } from '../dto/auth.dto';
 
-import { UsersService } from '../../users/users.service';
-import { User } from '../../users/entities/user.entity';
 import { Role } from '../models/roles.model';
+
+import { User } from '@prisma/client';
+import { UsersService } from '../../users/users.service';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
   }
 
   async generateJWT(user: User) {
-    const payload: JwtPayload = { role: user.role, sub: user.id };
+    const payload: JwtPayload = { sub: user.id };
 
     return {
       access_token: this.jwtService.sign(payload),
@@ -37,7 +38,7 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload: JwtPayload = { role: user.role, sub: user.id };
+    const payload: JwtPayload = { sub: user.id };
 
     return {
       access_token: this.jwtService.sign(payload),
@@ -47,12 +48,18 @@ export class AuthService {
 
   async signup(dto: SignupDto) {
     const newUser = await this.usersService.create({
+      documentId: 123,
+      documentType: 123,
+      firstName: 'firstName',
+      lastName: 'lastName',
+      gender: 'gender',
+      nickName: 'nickName',
+      state: 123,
       email: dto.email,
       password: dto.password,
-      role: Role.CUSTOMER,
     });
 
-    const payload: JwtPayload = { role: newUser.role, sub: newUser.id };
+    const payload: JwtPayload = { sub: newUser.id };
 
     return {
       access_token: this.jwtService.sign(payload),

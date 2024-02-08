@@ -7,9 +7,11 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { ApiTags } from '@nestjs/swagger';
+
+import { UsersService } from './users.service';
+
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -29,11 +31,6 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
-  }
-
-  @Get(':id/orders')
-  getOrders(@Param('id') id: string) {
-    return this.usersService.getOrders(+id);
   }
 
   @Put(':id')
