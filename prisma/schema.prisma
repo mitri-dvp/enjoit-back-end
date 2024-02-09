@@ -1,25 +1,17 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./client"
 }
 
 generator zod {
-  provider                         = "zod-prisma-types"
-  output                           = "./zod" // default is ./generated/zod
-  useMultipleFiles                 = true // default is false
-  writeBarrelFiles                 = true // default is true
-  createInputTypes                 = true // default is true
-  createModelTypes                 = true // default is true
-  addInputTypeValidation           = false // default is true
-  addIncludeType                   = false // default is true
-  addSelectType                    = false // default is true
-  validateWhereUniqueInput         = false // default is false
-  createOptionalDefaultValuesTypes = true // default is false
-  createRelationValuesTypes        = false // default is false
-  createPartialTypes               = false // default is false
-  useDefaultValidators             = true // default is true
-  coerceDate                       = true // default is true
-  writeNullishInModelTypes         = false // default is false
+  provider              = "nestjs-zod-prisma"
+  output                = "./zod/"
+  relationModel         = false
+  generateDto           = false
+  modelCase             = "PascalCase"
+  modelSuffix           = "Model"
+  useDecimalJs          = true
+  imports               = ""
+  prismaJsonNullability = true
 }
 
 datasource db {

@@ -1,13 +1,11 @@
 import { createZodDto } from 'nestjs-zod';
-import { z } from 'nestjs-zod/z';
+import { UserModel } from 'prisma/zod/';
+import { UserCreateInputSchema } from 'src/users/schemas/user.schema';
 
-const LoginSchema = z
-  .object({
-    email: z.string().email(),
-    password: z.string().min(6),
-  })
-  .strict();
+const LoginSchema = UserModel.pick({ email: true, password: true });
+
+const SignupSchema = UserCreateInputSchema;
 
 export class LoginDto extends createZodDto(LoginSchema) {}
 
-export class SignupDto extends createZodDto(LoginSchema) {}
+export class SignupDto extends createZodDto(SignupSchema) {}

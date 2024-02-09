@@ -41,10 +41,10 @@
     "pg": "^8.11.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "zod": "^3.22.4",
-    "zod-prisma-types": "^3.1.6"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@mitri-dvp/nestjs-zod-prisma": "github:mitri-dvp/nestjs-zod-prisma",
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
