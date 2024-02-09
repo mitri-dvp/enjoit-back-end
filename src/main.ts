@@ -5,9 +5,9 @@ import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 import { patchNestJsSwagger } from 'nestjs-zod';
 
 import { ConfigService } from '@nestjs/config';
-import { Config } from './config/validation';
+import { Config } from '@src/config/validation';
 
-import { AppModule } from './app.module';
+import { AppModule } from '@src/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

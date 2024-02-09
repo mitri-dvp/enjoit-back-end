@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { HttpModule, HttpService } from '@nestjs/axios';
 
 import { ConfigModule } from '@nestjs/config';
-import { enviorments } from './config/enviorments';
-import { validate } from './config/validation';
-import config from './config/config';
+import { enviorments } from '@src/config/enviorments';
+import { validate } from '@src/config/validation';
+import config from '@src/config/config';
 
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from '@src/prisma/prisma.module';
 
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { AuthModule } from '@src/auth/auth.module';
+import { UsersModule } from '@src/users/users.module';
 
 @Module({
   imports: [

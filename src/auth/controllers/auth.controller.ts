@@ -3,10 +3,10 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UseZodGuard } from 'nestjs-zod';
 
-import { LoginDto, SignupDto } from '../dto/auth.dto';
-import { AuthService } from '../services/auth.service';
-
 import { User } from '@prisma/client';
+
+import { LoginDto, SignupDto } from '@src/auth/dto/auth.dto';
+import { AuthService } from '@src/auth/services/auth.service';
 
 @Controller('auth')
 export class AuthController {

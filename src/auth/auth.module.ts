@@ -4,15 +4,15 @@ import { PassportModule } from '@nestjs/passport';
 import { HttpModule } from '@nestjs/axios';
 
 import { ConfigType } from '@nestjs/config';
-import config from '../config/config';
+import config from '@src/config/config';
 
-import { AuthController } from './controllers/auth.controller';
-import { AuthService } from './services/auth.service';
+import { AuthController } from '@src/auth/controllers/auth.controller';
+import { AuthService } from '@src/auth/services/auth.service';
 
-import { LocalStrategy } from './strategies/local.strategy';
-import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalStrategy } from '@src/auth/strategies/local.strategy';
+import { JwtStrategy } from '@src/auth/strategies/jwt.strategy';
 
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '@src/users/users.module';
 
 @Module({
   imports: [

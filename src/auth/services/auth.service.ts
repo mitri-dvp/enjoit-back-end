@@ -2,14 +2,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { JwtPayload } from '../models/token.model';
+import { JwtPayload } from '@src/auth/models/token.model';
 
-import { SignupDto } from '../dto/auth.dto';
+import { SignupDto } from '@src/auth/dto/auth.dto';
 
-import { Role } from '../models/roles.model';
+import { Role } from '@src/auth/models/roles.model';
 
 import { User } from '@prisma/client';
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '@src/users/users.service';
 
 @Injectable()
 export class AuthService {
