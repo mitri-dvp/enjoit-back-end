@@ -20,7 +20,7 @@ import { UsersModule } from '@src/users/users.module';
       useFactory: (configService: ConfigType<typeof config>) => {
         return {
           secret: configService.server.jwtSecret,
-          signOptions: { expiresIn: '10d' },
+          signOptions: { expiresIn: '4h' },
         };
       },
       inject: [config.KEY],

@@ -18,7 +18,7 @@ import { UsersModule } from '@src/users/users.module';
     AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: enviorments[process.env.NODE_ENV] || '.env',
+      envFilePath: enviorments[process.env.NODE_ENV || '.env'] || '.env',
       load: [config],
       validate: validate,
     }),

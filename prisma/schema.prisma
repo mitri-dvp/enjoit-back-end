@@ -228,33 +228,37 @@ model UserRole {
 }
 
 model User {
+  // Metadata
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Attributes
-  nickName        String  @map("nick_name") @db.VarChar(255)
-  firstName       String  @map("first_name") @db.VarChar(255)
-  lastName        String  @map("last_name") @db.VarChar(255)
-  documentType    Int     @map("document_type")
-  documentId      Int     @map("document_id")
-  gender          String  @db.VarChar(255)
-  birthDate       Int?    @map("birth_date")
-  birthCountry    String? @map("birth_country") @db.VarChar(255)
-  birthState      String? @map("birth_state") @db.VarChar(255)
-  birthCity       String? @map("birth_city") @db.VarChar(255)
-  birthPostalCode Int?    @map("birth_postal_code")
-  profile         Int?
-  role            Int?
-  phone           Int?
-  email           String? @db.VarChar(255)
-  password        String? @db.VarChar(255)
-  status          Int?
+  nickName           String   @map("nick_name") @db.VarChar(255)
+  email              String   @unique @db.VarChar(255)
+  password           String   @db.VarChar(255)
+  resetPasswordToken String?  @map("reset_password_token") @db.VarChar(255)
+  firstName          String   @map("first_name") @db.VarChar(255)
+  lastName           String   @map("last_name") @db.VarChar(255)
+  gender             String   @db.VarChar(255)
+  birthDate          DateTime @map("birth_date")
+  phone              String   @db.VarChar(255) // @unique?
+  phonePrefix        String   @map("phone_prefix") @db.VarChar(255)
+  birthCountry       String   @map("birth_country") @db.VarChar(255)
+  birthState         String   @map("birth_state") @db.VarChar(255)
+  birthCity          String   @map("birth_city") @db.VarChar(255)
+  birthPostalCode    Int?     @map("birth_postal_code")
+
+  // Extras
   cellphone       Int?
   cellphonePrefix Int?    @map("cellphone_prefix")
-  phonePrefix     Int?    @map("phone_prefix")
+  documentType    Int?    @map("document_type")
+  documentId      Int?    @map("document_id")
+  profile         Int?
+  role            Int?
+  status          Int?
   profilePic      String? @map("profile_pic") @db.VarChar(255)
-  state           Int // like Draft/Publish?
+  state           Int? // like Draft/Publish?
 
   // Relations
   countryId Int?               @map("country_id")

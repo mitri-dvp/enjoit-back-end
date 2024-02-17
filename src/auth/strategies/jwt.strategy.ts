@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ConfigType } from '@nestjs/config';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 
-import { JwtPayload } from '@src/auth/models/token.model';
+import { JwtUserPayload } from '@src/auth/models/token.model';
 
 import config from '@src/config/config';
 
@@ -17,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
   }
 
-  async validate(payload: JwtPayload) {
+  async validate(payload: JwtUserPayload) {
     return payload;
   }
 }

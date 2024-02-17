@@ -1,12 +1,46 @@
+import { z } from 'nestjs-zod/z';
 import { createZodDto } from 'nestjs-zod';
 import { UserModel } from 'prisma/zod/';
 
-import { UserCreateInputSchema } from '@src/users/schemas/user.schema';
+import {
+  UserCreateInputSchema,
+  UserResponseSchema,
+} from '@src/users/schemas/user.schema';
 
-const LoginSchema = UserModel.pick({ email: true, password: true });
+export const emailSchema = z.string().min(1).email();
 
-const SignupSchema = UserCreateInputSchema;
-
+const LoginSchema = UserModel.pick({
+  birthCountry: true,
+  email: true,
+  password: true,
+});
 export class LoginDto extends createZodDto(LoginSchema) {}
 
+const SignupSchema = UserCreateInputSchema;
 export class SignupDto extends createZodDto(SignupSchema) {}
+
+const AuthReponseSchema = z.object({
+  accessToken: z.string(),
+  user: UserResponseSchema,
+});
+export const AuthReponseDto = createZodDto(AuthReponseSchema);
+
+const GetFPConfirmationCodeSchema = z.object({ identifier: z.string() });
+export class GetFPConfirmationCodeDto extends createZodDto(
+  GetFPConfirmationCodeSchema,
+) {}
+
+const validateFPConfirmationCodeSchema = z.object({
+  confirmationCode: z.string(),
+  identifier: z.string(),
+});
+export class validateFPConfirmationCodeDto extends createZodDto(
+  validateFPConfirmationCodeSchema,
+) {}
+
+const ChangePasswordSchema = z
+  .object({
+    newPassword: z.string(),
+  })
+  .merge(validateFPConfirmationCodeSchema);
+export class ChangePasswordDto extends createZodDto(ChangePasswordSchema) {}
