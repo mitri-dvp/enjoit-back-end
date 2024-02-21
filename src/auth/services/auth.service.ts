@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   JsonWebTokenError,
   JwtService,
@@ -9,7 +9,6 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'node:crypto';
 
 import {
-  JwtPayload,
   JwtResetPasswordPayload,
   JwtUserPayload,
 } from '@src/auth/models/token.model';
@@ -17,17 +16,13 @@ import {
 import {
   SignupDto,
   GetFPConfirmationCodeDto,
-  emailSchema,
   validateFPConfirmationCodeDto,
   ChangePasswordDto,
 } from '@src/auth/dto/auth.dto';
 
-import { Role } from '@src/auth/models/roles.model';
-
 import { UsersService } from '@src/users/users.service';
 import { User } from '@src/users/schemas/user.schema';
 import { ZodHttpException } from '@src/handler/exception';
-import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
 import { HttpResponse } from '@src/handler/http';
 
 @Injectable()

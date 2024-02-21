@@ -6,18 +6,20 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ConfigType } from '@nestjs/config';
+
+import { ConfigService } from '@nestjs/config';
+import { Config } from '@src/config/validation';
+
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 
 import { IS_PUBLIC_KEY } from '@src/auth/decorators/public.decorator';
-import config from '@src/config/config';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    @Inject(config.KEY) private configService: ConfigType<typeof config>,
+    private configService: ConfigService<Config>,
   ) {}
 
   canActivate(
@@ -30,7 +32,7 @@ export class ApiKeyGuard implements CanActivate {
     if (isPublic) return true;
 
     const authHeader = request.header('Auth');
-    const isAuth = authHeader === this.configService.server.apiKey;
+    const isAuth = authHeader === this.configService.getOrThrow('API_KEY');
     if (!isAuth) {
       throw new UnauthorizedException('Not Allowed');
     }

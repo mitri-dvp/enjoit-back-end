@@ -3,8 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { HttpModule } from '@nestjs/axios';
 
-import { ConfigType } from '@nestjs/config';
-import config from '@src/config/config';
+import { ConfigService } from '@nestjs/config';
+import { Config } from '@src/config/validation';
 
 import { AuthController } from '@src/auth/controllers/auth.controller';
 import { AuthService } from '@src/auth/services/auth.service';
@@ -17,13 +17,13 @@ import { UsersModule } from '@src/users/users.module';
 @Module({
   imports: [
     JwtModule.registerAsync({
-      useFactory: (configService: ConfigType<typeof config>) => {
+      useFactory: (configService: ConfigService<Config>) => {
         return {
-          secret: configService.server.jwtSecret,
+          secret: configService.getOrThrow('JWT_SECRET'),
           signOptions: { expiresIn: '4h' },
         };
       },
-      inject: [config.KEY],
+      inject: [ConfigService],
     }),
     PassportModule,
     HttpModule,
