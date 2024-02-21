@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '@src/prisma/prisma.service';
 
@@ -46,7 +46,13 @@ export class UsersService {
     const user = await this.prisma.user.findUnique({ where: { id: id } });
 
     if (!user) {
-      throw new NotFoundException(`User #${id} not found.`);
+      throw new ZodHttpException('NOT_FOUND', [
+        {
+          code: 'not_found',
+          path: ['id'],
+          message: 'User not found',
+        },
+      ]);
     }
 
     return user;
@@ -58,7 +64,13 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new NotFoundException(`User email "${email}" not found`);
+      throw new ZodHttpException('NOT_FOUND', [
+        {
+          code: 'not_found',
+          path: ['email'],
+          message: 'User not found',
+        },
+      ]);
     }
 
     return user;
@@ -70,9 +82,13 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new NotFoundException(
-        `User phone "+${payload.phonePrefix} ${payload.phone}" not found`,
-      );
+      throw new ZodHttpException('NOT_FOUND', [
+        {
+          code: 'not_found',
+          path: ['phone', 'phonePrefix'],
+          message: 'User not found',
+        },
+      ]);
     }
 
     return user;
@@ -139,7 +155,13 @@ export class UsersService {
     });
 
     if (!user) {
-      throw new NotFoundException(`User not found`);
+      throw new ZodHttpException('NOT_FOUND', [
+        {
+          code: 'not_found',
+          path: Object.keys(where || {}),
+          message: 'User not found',
+        },
+      ]);
     }
 
     return user;
