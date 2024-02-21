@@ -4,6 +4,7 @@ import { ZodIssueBase, ZodIssueOptionalMessage } from 'zod';
 declare const ZodHttpIssueCode: {
   unique_constraint: 'unique_constraint';
   invalid_credentials: 'invalid_credentials';
+  invalid_role: 'invalid_role';
   not_found: 'not_found';
   token_expired: 'token_expired';
 };
@@ -18,6 +19,10 @@ export interface ZodInvalidCredentialsIssue extends ZodIssueBase {
   code: typeof ZodHttpIssueCode.invalid_credentials;
 }
 
+export interface ZodInvalidRoleIssue extends ZodIssueBase {
+  code: typeof ZodHttpIssueCode.invalid_role;
+}
+
 export interface ZodNotFoundIssue extends ZodIssueBase {
   code: typeof ZodHttpIssueCode.not_found;
 }
@@ -30,6 +35,7 @@ type ZodHttpIssueOptionalMessage =
   | ZodIssueOptionalMessage
   | ZodUniqueIssue
   | ZodInvalidCredentialsIssue
+  | ZodInvalidRoleIssue
   | ZodNotFoundIssue
   | ZodTokenExpiredIssue;
 

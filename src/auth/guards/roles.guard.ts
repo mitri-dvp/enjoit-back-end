@@ -1,9 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
@@ -11,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ROLES_KEY } from '@src/auth/decorators/roles.decorator';
 import { Role } from '@src/auth/models/roles.model';
 import { JwtUserPayload } from '@src/auth/models/token.model';
+import { ZodHttpException } from '@src/handler/exception';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -27,11 +23,16 @@ export class RolesGuard implements CanActivate {
 
     const user = request.user as JwtUserPayload;
 
-    // const isAuth = roles.some((role) => role === user.role);
-    const isAuth = false;
+    const isAuth = roles.some((role) => user.role === role);
 
     if (!isAuth) {
-      throw new ForbiddenException();
+      throw new ZodHttpException('FORBIDDEN', [
+        {
+          code: 'invalid_role',
+          path: ['role'],
+          message: 'Forbidden',
+        },
+      ]);
     }
 
     return true;

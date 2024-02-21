@@ -130,22 +130,6 @@ model OrderItem {
   @@map("order_item")
 }
 
-model Role {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  // Attributes
-  name      String @db.VarChar(200)
-  reference String @db.VarChar(200)
-  state     Int // like Draft/Publish?
-
-  // Relations
-  userRoles RolesOnUserRoles[]
-
-  @@map("role")
-}
-
 model Store {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -212,21 +196,6 @@ model UserReset {
   @@map("user_reset")
 }
 
-model UserRole {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  // Attributes
-  state Int // like Draft/Publish?
-
-  // Relations
-  users UsersOnUserRoles[]
-  roles RolesOnUserRoles[]
-
-  @@map("user_role")
-}
-
 model User {
   // Metadata
   id        Int      @id @default(autoincrement())
@@ -255,36 +224,20 @@ model User {
   documentType    Int?    @map("document_type")
   documentId      Int?    @map("document_id")
   profile         Int?
-  role            Int?
+  role            Role?
   status          Int?
   profilePic      String? @map("profile_pic") @db.VarChar(255)
   state           Int? // like Draft/Publish?
 
   // Relations
-  countryId Int?               @map("country_id")
-  storeId   Int?               @map("store_id")
-  tableId   Int?               @map("table_id")
-  userRoles UsersOnUserRoles[]
+  countryId Int? @map("country_id")
+  storeId   Int? @map("store_id")
+  tableId   Int? @map("table_id")
 
   @@map("user")
 }
 
-model UsersOnUserRoles {
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int      @map("user_id")
-  userRole   UserRole @relation(fields: [userRoleId], references: [id])
-  userRoleId Int      @map("user_role_id")
-
-  @@id([userId, userRoleId])
-  @@map("users_on_user_roles")
-}
-
-model RolesOnUserRoles {
-  role       Role     @relation(fields: [roleId], references: [id])
-  roleId     Int      @map("role_id")
-  userRole   UserRole @relation(fields: [userRoleId], references: [id])
-  userRoleId Int      @map("user_role_id")
-
-  @@id([roleId, userRoleId])
-  @@map("roles_on_user_roles")
+enum Role {
+  ADMIN
+  USER
 }

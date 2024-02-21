@@ -8,10 +8,14 @@ import {
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'node:crypto';
 
+import { ZodHttpException } from '@src/handler/exception';
+import { HttpResponse } from '@src/handler/http';
+
 import {
   JwtResetPasswordPayload,
   JwtUserPayload,
 } from '@src/auth/models/token.model';
+import { Role } from '@src/auth/models/roles.model';
 
 import {
   SignupDto,
@@ -22,8 +26,6 @@ import {
 
 import { UsersService } from '@src/users/users.service';
 import { User } from '@src/users/schemas/user.schema';
-import { ZodHttpException } from '@src/handler/exception';
-import { HttpResponse } from '@src/handler/http';
 
 @Injectable()
 export class AuthService {
@@ -50,7 +52,7 @@ export class AuthService {
   }
 
   async generateJWT(user: User) {
-    const payload: JwtUserPayload = { sub: user.id };
+    const payload: JwtUserPayload = { sub: user.id, role: user.role };
 
     return {
       accessToken: this.jwtService.sign(payload),
@@ -59,7 +61,7 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const jwtPayload: JwtUserPayload = { sub: user.id };
+    const jwtPayload: JwtUserPayload = { sub: user.id, role: user.role };
 
     return {
       accessToken: this.jwtService.sign(jwtPayload),
@@ -70,7 +72,10 @@ export class AuthService {
   async signup(payload: SignupDto) {
     const newUser = await this.usersService.create(payload);
 
-    const jwtPayload: JwtUserPayload = { sub: newUser.id };
+    const jwtPayload: JwtUserPayload = {
+      sub: newUser.id,
+      role: newUser.role as Role,
+    };
 
     return {
       accessToken: this.jwtService.sign(jwtPayload),
