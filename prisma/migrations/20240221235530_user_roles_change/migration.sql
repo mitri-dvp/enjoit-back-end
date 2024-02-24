@@ -25,7 +25,7 @@ ALTER TABLE "users_on_user_roles" DROP CONSTRAINT "users_on_user_roles_user_role
 
 -- AlterTable
 ALTER TABLE "user" DROP COLUMN "role",
-ADD COLUMN     "role" "Role";
+ADD COLUMN     "role" "Role" DEFAULT 'USER';
 
 -- DropTable
 DROP TABLE "role";

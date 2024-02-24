@@ -4,6 +4,9 @@ const prisma = new PrismaClient();
 import * as bcrypt from 'bcrypt';
 
 async function main() {
+  await prisma.$executeRawUnsafe(
+    `TRUNCATE TABLE public."user" RESTART IDENTITY CASCADE;`,
+  );
   const admin = await prisma.user.create({
     data: {
       email: 'admin@gmail.com',
@@ -13,7 +16,7 @@ async function main() {
       firstName: '',
       lastName: '',
       gender: '',
-      birthDate: new Date(),
+      birthDate: new Date(Number()),
       phone: '',
       phonePrefix: '',
       birthCountry: '',
@@ -27,16 +30,16 @@ async function main() {
       email: 'john@gmail.com',
       password: await bcrypt.hash('password', 10),
       role: 'USER',
-      nickName: '',
-      firstName: '',
-      lastName: '',
-      gender: '',
-      birthDate: new Date(),
-      phone: '',
-      phonePrefix: '',
-      birthCountry: '',
-      birthState: '',
-      birthCity: '',
+      nickName: 'jhondoe_',
+      firstName: 'John',
+      lastName: 'Doe',
+      gender: 'male',
+      birthDate: new Date('1/1/2000'),
+      phone: '5555555555',
+      phonePrefix: '57',
+      birthCountry: 'colombia',
+      birthState: 'atlantico',
+      birthCity: 'barranquilla',
       birthPostalCode: null,
     },
   });

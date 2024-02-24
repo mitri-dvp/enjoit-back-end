@@ -19,6 +19,11 @@ export class LoginDto extends createZodDto(LoginSchema) {}
 const SignupSchema = UserCreateInputSchema;
 export class SignupDto extends createZodDto(SignupSchema) {}
 
+const GuestSchema = z.object({
+  deviceId: z.string(),
+});
+export class GuestDto extends createZodDto(GuestSchema) {}
+
 const AuthReponseSchema = z.object({
   accessToken: z.string(),
   user: UserResponseSchema,

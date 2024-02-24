@@ -19,10 +19,14 @@ import {
   AuthReponseDto,
   validateFPConfirmationCodeDto,
   ChangePasswordDto,
+  GuestDto,
 } from '@src/auth/dto/auth.dto';
 import { AuthService } from '@src/auth/services/auth.service';
+import { JwtAuthGuard } from '@src/auth/guards/jwt-auth.guard';
+import { JwtUserPayload } from '@src/auth/models/token.model';
 
 import { User } from '@src/users/schemas/user.schema';
+import { UserResponseDto } from '@src/users/dto/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -41,6 +45,13 @@ export class AuthController {
   @ZodSerializerDto(AuthReponseDto)
   async signup(@Body() dto: SignupDto) {
     return this.authService.signup(dto);
+  }
+
+  @Post('guest')
+  @UseZodGuard('body', GuestDto)
+  @ZodSerializerDto(AuthReponseDto)
+  async loginAsGuest(@Body() dto: GuestDto) {
+    return this.authService.loginAsGuest(dto);
   }
 
   @Get('forgot-password/confirm-code')
@@ -64,9 +75,9 @@ export class AuthController {
   }
 
   @Get('me')
-  @UseGuards(AuthGuard('jwt'))
-  @ZodSerializerDto(AuthReponseDto)
+  @UseGuards(JwtAuthGuard)
+  @ZodSerializerDto(UserResponseDto)
   async me(@Req() req: Request) {
-    return req.user;
+    return this.authService.me(req.user as JwtUserPayload);
   }
 }

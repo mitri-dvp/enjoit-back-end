@@ -1,16 +1,22 @@
-import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 
+import * as bcrypt from 'bcrypt';
+import * as crypto from 'node:crypto';
+
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '@src/prisma/prisma.service';
+
+import { ZodHttpException } from '@src/handler/exception';
 
 import {
   UserCreateDto,
   FindByPhoneDto,
   UserUpdateDto,
 } from '@src/users/dto/user.dto';
-import { ZodHttpException } from '@src/handler/exception';
-import { Prisma } from '@prisma/client';
-import { emailSchema } from '@src/auth/dto/auth.dto';
+
+import { GuestDto, emailSchema } from '@src/auth/dto/auth.dto';
+import { Role } from '@src/auth/models/roles.model';
+
 import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js';
 
 @Injectable()
@@ -36,6 +42,38 @@ export class UsersService {
     payload.password = hashPassword;
 
     return this.prisma.user.create({ data: payload });
+  }
+
+  async createGuestUser(payload: GuestDto) {
+    const user = await this.prisma.user.findFirst({
+      where: { deviceId: payload.deviceId },
+    });
+
+    if (user) return user;
+
+    // Entropy > 100 bit
+    const randomString = () => crypto.randomBytes(16).toString('hex');
+
+    const hashedPassword = await bcrypt.hash(randomString(), 10);
+
+    const guestUser = {
+      deviceId: payload.deviceId,
+      role: Role.GUEST,
+      email: randomString(),
+      password: hashedPassword,
+      nickName: randomString(),
+      firstName: randomString(),
+      lastName: randomString(),
+      gender: randomString(),
+      phone: randomString(),
+      phonePrefix: randomString(),
+      birthCountry: randomString(),
+      birthState: randomString(),
+      birthCity: randomString(),
+      birthDate: new Date(Number()),
+    };
+
+    return this.prisma.user.create({ data: guestUser });
   }
 
   async findAll() {

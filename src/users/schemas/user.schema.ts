@@ -5,9 +5,10 @@ import { UserModel } from 'prisma/zod/';
 export type User = z.infer<typeof UserModel>;
 
 export const UserCreateInputSchema = UserModel.pick({
-  nickName: true,
   email: true,
   password: true,
+  role: true,
+  nickName: true,
   firstName: true,
   lastName: true,
   gender: true,
@@ -37,5 +38,6 @@ export const UserResponseSchema = z.object(
   UserModel.omit({
     password: true,
     resetPasswordToken: true,
+    deviceId: true,
   }).shape,
 );

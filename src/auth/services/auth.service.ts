@@ -5,6 +5,7 @@ import {
   NotBeforeError,
   TokenExpiredError,
 } from '@nestjs/jwt';
+
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'node:crypto';
 
@@ -22,6 +23,7 @@ import {
   GetFPConfirmationCodeDto,
   validateFPConfirmationCodeDto,
   ChangePasswordDto,
+  GuestDto,
 } from '@src/auth/dto/auth.dto';
 
 import { UsersService } from '@src/users/users.service';
@@ -69,6 +71,20 @@ export class AuthService {
     };
   }
 
+  async loginAsGuest(payload: GuestDto) {
+    const newUser = await this.usersService.createGuestUser(payload);
+
+    const jwtPayload: JwtUserPayload = {
+      sub: newUser.id,
+      role: newUser.role as Role,
+    };
+
+    return {
+      accessToken: this.jwtService.sign(jwtPayload),
+      user: newUser,
+    };
+  }
+
   async signup(payload: SignupDto) {
     const newUser = await this.usersService.create(payload);
 
@@ -81,6 +97,10 @@ export class AuthService {
       accessToken: this.jwtService.sign(jwtPayload),
       user: newUser,
     };
+  }
+
+  async me(payload: JwtUserPayload) {
+    return await this.usersService.findOne(payload.sub);
   }
 
   async getForgotPasswordConfirmationCode(params: GetFPConfirmationCodeDto) {

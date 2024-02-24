@@ -203,10 +203,11 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Attributes
-  nickName           String   @map("nick_name") @db.VarChar(255)
   email              String   @unique @db.VarChar(255)
   password           String   @db.VarChar(255)
   resetPasswordToken String?  @map("reset_password_token") @db.VarChar(255)
+  deviceId           String?  @unique @map("device_id") @db.VarChar(255)
+  nickName           String   @map("nick_name") @db.VarChar(255)
   firstName          String   @map("first_name") @db.VarChar(255)
   lastName           String   @map("last_name") @db.VarChar(255)
   gender             String   @db.VarChar(255)
@@ -224,7 +225,7 @@ model User {
   documentType    Int?    @map("document_type")
   documentId      Int?    @map("document_id")
   profile         Int?
-  role            Role?
+  role            Role?   @default(USER)
   status          Int?
   profilePic      String? @map("profile_pic") @db.VarChar(255)
   state           Int? // like Draft/Publish?
@@ -240,4 +241,5 @@ model User {
 enum Role {
   ADMIN
   USER
+  GUEST
 }
