@@ -35,17 +35,17 @@ export class GetFPConfirmationCodeDto extends createZodDto(
   GetFPConfirmationCodeSchema,
 ) {}
 
-const validateFPConfirmationCodeSchema = z.object({
+const ValidateFPConfirmationCodeSchema = z.object({
   confirmationCode: z.string(),
   identifier: z.string(),
 });
-export class validateFPConfirmationCodeDto extends createZodDto(
-  validateFPConfirmationCodeSchema,
+export class ValidateFPConfirmationCodeDto extends createZodDto(
+  ValidateFPConfirmationCodeSchema,
 ) {}
 
 const ChangePasswordSchema = z
   .object({
     newPassword: z.string(),
   })
-  .merge(validateFPConfirmationCodeSchema);
+  .merge(ValidateFPConfirmationCodeSchema);
 export class ChangePasswordDto extends createZodDto(ChangePasswordSchema) {}

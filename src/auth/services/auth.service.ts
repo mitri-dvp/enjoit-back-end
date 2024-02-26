@@ -21,7 +21,7 @@ import { Role } from '@src/auth/models/roles.model';
 import {
   SignupDto,
   GetFPConfirmationCodeDto,
-  validateFPConfirmationCodeDto,
+  ValidateFPConfirmationCodeDto,
   ChangePasswordDto,
   GuestDto,
 } from '@src/auth/dto/auth.dto';
@@ -126,7 +126,7 @@ export class AuthService {
   }
 
   async validateForgotPasswordConfirmationCode(
-    payload: validateFPConfirmationCodeDto,
+    payload: ValidateFPConfirmationCodeDto,
   ) {
     const { confirmationCode, identifier } = payload;
 

@@ -17,7 +17,7 @@ import {
   SignupDto,
   GetFPConfirmationCodeDto,
   AuthReponseDto,
-  validateFPConfirmationCodeDto,
+  ValidateFPConfirmationCodeDto,
   ChangePasswordDto,
   GuestDto,
 } from '@src/auth/dto/auth.dto';
@@ -64,7 +64,7 @@ export class AuthController {
   @Post('forgot-password/confirm-code')
   @HttpCode(200)
   async validateForgotPasswordConfirmationCode(
-    @Body() dto: validateFPConfirmationCodeDto,
+    @Body() dto: ValidateFPConfirmationCodeDto,
   ) {
     return this.authService.validateForgotPasswordConfirmationCode(dto);
   }
