@@ -7,6 +7,7 @@ declare const ZodHttpIssueCode: {
   invalid_role: 'invalid_role';
   not_found: 'not_found';
   token_expired: 'token_expired';
+  invalid_token: 'invalid_token';
 };
 
 type ZodHttpIssueCode = keyof typeof ZodHttpIssueCode;
@@ -30,6 +31,9 @@ export interface ZodNotFoundIssue extends ZodIssueBase {
 export interface ZodTokenExpiredIssue extends ZodIssueBase {
   code: typeof ZodHttpIssueCode.token_expired;
 }
+export interface ZodInvalidTokenIssue extends ZodIssueBase {
+  code: typeof ZodHttpIssueCode.invalid_token;
+}
 
 type ZodHttpIssueOptionalMessage =
   | ZodIssueOptionalMessage
@@ -37,7 +41,8 @@ type ZodHttpIssueOptionalMessage =
   | ZodInvalidCredentialsIssue
   | ZodInvalidRoleIssue
   | ZodNotFoundIssue
-  | ZodTokenExpiredIssue;
+  | ZodTokenExpiredIssue
+  | ZodInvalidTokenIssue;
 
 type ZodHttpIssue = ZodHttpIssueOptionalMessage & {
   fatal?: boolean;

@@ -20,6 +20,7 @@ import {
   ValidateFPConfirmationCodeDto,
   ChangePasswordDto,
   GuestDto,
+  SocialDto,
 } from '@src/auth/dto/auth.dto';
 import { AuthService } from '@src/auth/services/auth.service';
 import { JwtAuthGuard } from '@src/auth/guards/jwt-auth.guard';
@@ -52,6 +53,13 @@ export class AuthController {
   @ZodSerializerDto(AuthReponseDto)
   async loginAsGuest(@Body() dto: GuestDto) {
     return this.authService.loginAsGuest(dto);
+  }
+
+  @Post('login-social')
+  @UseZodGuard('body', SocialDto)
+  @ZodSerializerDto(AuthReponseDto)
+  async loginSocial(@Body() dto: SocialDto) {
+    return this.authService.loginSocial(dto);
   }
 
   @Get('forgot-password/confirm-code')

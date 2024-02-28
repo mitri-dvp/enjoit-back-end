@@ -203,21 +203,23 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Attributes
-  email              String   @unique @db.VarChar(255)
-  password           String   @db.VarChar(255)
-  resetPasswordToken String?  @map("reset_password_token") @db.VarChar(255)
-  deviceId           String?  @unique @map("device_id") @db.VarChar(255)
-  nickName           String   @map("nick_name") @db.VarChar(255)
-  firstName          String   @map("first_name") @db.VarChar(255)
-  lastName           String   @map("last_name") @db.VarChar(255)
-  gender             String   @db.VarChar(255)
-  birthDate          DateTime @map("birth_date")
-  phone              String   @db.VarChar(255) // @unique?
-  phonePrefix        String   @map("phone_prefix") @db.VarChar(255)
-  birthCountry       String   @map("birth_country") @db.VarChar(255)
-  birthState         String   @map("birth_state") @db.VarChar(255)
-  birthCity          String   @map("birth_city") @db.VarChar(255)
-  birthPostalCode    Int?     @map("birth_postal_code")
+  email              String    @unique @db.VarChar(255)
+  password           String    @db.VarChar(255)
+  resetPasswordToken String?   @map("reset_password_token") @db.VarChar(255)
+  deviceId           String?   @unique @map("device_id") @db.VarChar(255)
+  nickName           String    @map("nick_name") @db.VarChar(255)
+  provider           Provider? @default(LOCAL)
+  isComplete         Boolean?  @default(true) @map("is_complete")
+  firstName          String    @map("first_name") @db.VarChar(255)
+  lastName           String    @map("last_name") @db.VarChar(255)
+  gender             String    @db.VarChar(255)
+  birthDate          DateTime  @map("birth_date")
+  phone              String    @db.VarChar(255) // @unique?
+  phonePrefix        String    @map("phone_prefix") @db.VarChar(255)
+  birthCountry       String    @map("birth_country") @db.VarChar(255)
+  birthState         String    @map("birth_state") @db.VarChar(255)
+  birthCity          String    @map("birth_city") @db.VarChar(255)
+  birthPostalCode    Int?      @map("birth_postal_code")
 
   // Extras
   cellphone       Int?
@@ -242,4 +244,11 @@ enum Role {
   ADMIN
   USER
   GUEST
+}
+
+enum Provider {
+  LOCAL
+  FACEBOOK
+  GOOGLE
+  APPLE
 }

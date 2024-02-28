@@ -24,6 +24,7 @@ import {
   ValidateFPConfirmationCodeDto,
   ChangePasswordDto,
   GuestDto,
+  SocialDto,
 } from '@src/auth/dto/auth.dto';
 
 import { UsersService } from '@src/users/users.service';
@@ -73,6 +74,20 @@ export class AuthService {
 
   async loginAsGuest(payload: GuestDto) {
     const newUser = await this.usersService.createGuestUser(payload);
+
+    const jwtPayload: JwtUserPayload = {
+      sub: newUser.id,
+      role: newUser.role as Role,
+    };
+
+    return {
+      accessToken: this.jwtService.sign(jwtPayload),
+      user: newUser,
+    };
+  }
+
+  async loginSocial(payload: SocialDto) {
+    const newUser = await this.usersService.createSocialUser(payload);
 
     const jwtPayload: JwtUserPayload = {
       sub: newUser.id,

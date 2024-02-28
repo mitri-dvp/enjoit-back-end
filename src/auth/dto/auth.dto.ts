@@ -6,6 +6,7 @@ import {
   UserCreateInputSchema,
   UserResponseSchema,
 } from '@src/users/schemas/user.schema';
+import { Provider } from 'prisma/zod/enums';
 
 export const emailSchema = z.string().min(1).email();
 
@@ -23,6 +24,12 @@ const GuestSchema = z.object({
   deviceId: z.string(),
 });
 export class GuestDto extends createZodDto(GuestSchema) {}
+
+const SocialSchema = z.object({
+  accessToken: z.string(),
+  provider: z.nativeEnum(Provider),
+});
+export class SocialDto extends createZodDto(SocialSchema) {}
 
 const AuthReponseSchema = z.object({
   accessToken: z.string(),
